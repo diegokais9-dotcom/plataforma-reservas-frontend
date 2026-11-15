@@ -1,0 +1,70 @@
+.contenedor {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 24px;
+  font-family: sans-serif;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+header div {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.registro {
+  margin-bottom: 32px;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  max-width: 380px;
+}
+
+.registro form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.registro input,
+.registro select {
+  padding: 8px;
+  font-size: 1rem;
+}
+
+.registro button {
+  margin-top: 12px;
+  padding: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background: #f0f0f0;
+}
+
+.error {
+  color: #c0392b;
+}
+
+.exito {
+  color: #1e8449;
+}

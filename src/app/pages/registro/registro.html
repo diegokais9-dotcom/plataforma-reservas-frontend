@@ -1,0 +1,63 @@
+<div class="contenedor">
+  <h1>Crear cuenta</h1>
+
+  <form [formGroup]="formulario" (ngSubmit)="registrar()">
+    <label for="nombre">Nombre</label>
+    <input id="nombre" type="text" formControlName="nombre" />
+    @if (formulario.controls.nombre.touched && formulario.controls.nombre.errors) {
+      <small class="error">
+        @if (formulario.controls.nombre.errors['required']) {
+          El nombre es requerido.
+        } @else {
+          El nombre debe tener entre 3 y 100 caracteres.
+        }
+      </small>
+    }
+
+    <label for="email">Email</label>
+    <input id="email" type="email" formControlName="email" />
+    @if (formulario.controls.email.touched && formulario.controls.email.errors) {
+      <small class="error">
+        @if (formulario.controls.email.errors['required']) {
+          El email es requerido.
+        } @else {
+          El email debe ser válido.
+        }
+      </small>
+    }
+
+    <label for="password">Contraseña</label>
+    <input id="password" type="password" formControlName="password" />
+    @if (formulario.controls.password.touched && formulario.controls.password.errors) {
+      <small class="error">
+        @if (formulario.controls.password.errors['required']) {
+          La contraseña es requerida.
+        } @else {
+          La contraseña debe tener al menos 6 caracteres.
+        }
+      </small>
+    }
+
+    <label for="confirmPassword">Confirmar contraseña</label>
+    <input id="confirmPassword" type="password" formControlName="confirmPassword" />
+    @if (formulario.controls.confirmPassword.touched && formulario.controls.confirmPassword.errors) {
+      <small class="error">Debes confirmar la contraseña.</small>
+    }
+
+    <button type="submit" [disabled]="guardando()">
+      {{ guardando() ? 'Registrando...' : 'Registrarme' }}
+    </button>
+  </form>
+
+  @if (mensajeError()) {
+    <p class="error">{{ mensajeError() }}</p>
+  }
+  @if (mensajeExito()) {
+    <p class="exito">{{ mensajeExito() }}</p>
+  }
+
+  <p>
+    ¿Ya tienes cuenta?
+    <button type="button" class="enlace" (click)="irALogin()">Iniciar sesión</button>
+  </p>
+</div>

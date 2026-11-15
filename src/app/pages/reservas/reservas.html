@@ -1,0 +1,97 @@
+<div class="contenedor">
+  <header>
+    <h1>Reservas</h1>
+    <div>
+      <span>Hola, {{ nombreUsuario() }}</span>
+      <button type="button" (click)="irAHabitaciones()">Habitaciones</button>
+      <button type="button" (click)="cerrarSesion()">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <section class="registro">
+    <h2>Nueva reserva</h2>
+
+    <form [formGroup]="formulario" (ngSubmit)="reservar()">
+      <label for="habitacionId">Habitación</label>
+      <select id="habitacionId" formControlName="habitacionId">
+        <option [ngValue]="0" disabled>Selecciona una habitación</option>
+        @for (h of habitaciones(); track h.id) {
+          <option [ngValue]="h.id">
+            {{ h.numero }} - {{ h.tipo }} - S/ {{ h.precioNoche }} por noche
+          </option>
+        }
+      </select>
+      @if (formulario.controls.habitacionId.touched && formulario.controls.habitacionId.errors) {
+        <small class="error">Selecciona una habitación.</small>
+      }
+
+      <label for="fechaEntrada">Fecha de entrada</label>
+      <input id="fechaEntrada" type="date" formControlName="fechaEntrada" />
+      @if (formulario.controls.fechaEntrada.touched && formulario.controls.fechaEntrada.errors) {
+        <small class="error">La fecha de entrada es obligatoria.</small>
+      }
+
+      <label for="fechaSalida">Fecha de salida</label>
+      <input id="fechaSalida" type="date" formControlName="fechaSalida" />
+      @if (formulario.controls.fechaSalida.touched && formulario.controls.fechaSalida.errors) {
+        <small class="error">La fecha de salida es obligatoria.</small>
+      }
+
+      <button type="submit" [disabled]="guardando()">
+        {{ guardando() ? 'Reservando...' : 'Reservar' }}
+      </button>
+    </form>
+
+    @if (errorFormulario()) {
+      <p class="error">{{ errorFormulario() }}</p>
+    }
+    @if (exitoFormulario()) {
+      <p class="exito">{{ exitoFormulario() }}</p>
+    }
+  </section>
+
+  <h2>Mis reservas</h2>
+
+  @if (cargando()) {
+    <p>Cargando reservas...</p>
+  }
+
+  @if (mensajeError()) {
+    <p class="error">{{ mensajeError() }}</p>
+  }
+
+  @if (!cargando() && !mensajeError()) {
+    @if (reservas().length === 0) {
+      <p>Aún no tienes reservas.</p>
+    } @else {
+      <table>
+        <thead>
+          <tr>
+            <th>Habitación</th>
+            <th>Entrada</th>
+            <th>Salida</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (r of reservas(); track r.id) {
+            <tr>
+              <td>{{ r.habitacionNumero }} ({{ r.habitacionTipo }})</td>
+              <td>{{ r.fechaEntrada }}</td>
+              <td>{{ r.fechaSalida }}</td>
+              <td>S/ {{ r.total }}</td>
+              <td>{{ r.estado }}</td>
+              <td>
+                @if (r.estado !== 'CANCELADA') {
+                  <button type="button" (click)="cancelar(r.id)">Cancelar</button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  }
+</div>
