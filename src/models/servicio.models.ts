@@ -1,0 +1,14 @@
+export interface Servicio {
+  id: number;
+  nombre: string;
+  descripcion: string | null;
+  precio: number;
+  activo: boolean;
+}
+
+export interface ServicioRequest {
+  nombre: string;
+  descripcion: string;
+  precio: number;
+  activo: boolean;
+}

@@ -1,0 +1,94 @@
+<div class="contenedor">
+  <header>
+    <h1>Servicios</h1>
+    <div>
+      <span>Hola, {{ nombreUsuario() }}</span>
+      <a class="boton-enlace" href="/habitaciones">Habitaciones</a>
+      <a class="boton-enlace" href="/reservas">Reservas</a>
+      <button type="button" (click)="cerrarSesion()">Cerrar sesión</button>
+    </div>
+  </header>
+
+  @if (cargando()) {
+    <p>Cargando servicios...</p>
+  }
+
+  @if (mensajeError()) {
+    <p class="error">{{ mensajeError() }}</p>
+  }
+
+  @if (!cargando() && !mensajeError()) {
+    @if (servicios().length === 0) {
+      <p>No hay servicios registrados.</p>
+    } @else {
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Activo</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (s of servicios(); track s.id) {
+            <tr>
+              <td>{{ s.nombre }}</td>
+              <td>{{ s.descripcion }}</td>
+              <td>S/ {{ s.precio }}</td>
+              <td>{{ s.activo ? 'Sí' : 'No' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  }
+
+  @if (esAdmin()) {
+    <section class="registro">
+      <h2>Registrar servicio</h2>
+
+      <form [formGroup]="formulario" (ngSubmit)="registrar()">
+        <label for="nombre">Nombre</label>
+        <input id="nombre" type="text" formControlName="nombre" />
+        @if (formulario.controls.nombre.touched && formulario.controls.nombre.errors) {
+          <small class="error">
+            @if (formulario.controls.nombre.errors['required']) {
+              El nombre es requerido.
+            } @else {
+              El nombre no puede pasar de 100 caracteres.
+            }
+          </small>
+        }
+
+        <label for="descripcion">Descripción</label>
+        <input id="descripcion" type="text" formControlName="descripcion" />
+        @if (formulario.controls.descripcion.touched && formulario.controls.descripcion.errors) {
+          <small class="error">La descripción no puede pasar de 500 caracteres.</small>
+        }
+
+        <label for="precio">Precio (S/)</label>
+        <input id="precio" type="number" step="0.01" formControlName="precio" />
+        @if (formulario.controls.precio.touched && formulario.controls.precio.errors) {
+          <small class="error">El precio debe ser mayor a 0.</small>
+        }
+
+        <label class="casilla">
+          <input type="checkbox" formControlName="activo" />
+          Servicio activo
+        </label>
+
+        <button type="submit" [disabled]="guardando()">
+          {{ guardando() ? 'Guardando...' : 'Registrar' }}
+        </button>
+      </form>
+
+      @if (errorFormulario()) {
+        <p class="error">{{ errorFormulario() }}</p>
+      }
+      @if (exitoFormulario()) {
+        <p class="exito">{{ exitoFormulario() }}</p>
+      }
+    </section>
+  }
+</div>
